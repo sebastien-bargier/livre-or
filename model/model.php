@@ -29,3 +29,12 @@ function getUserSession() {
     $userSession = mysqli_fetch_array($request,MYSQLI_ASSOC);
     return $userSession;
 }
+
+function insertComments($commentaire, $id) {
+    $db = dbConnect(); 
+    $ajoutCommentaire = mysqli_prepare($db, "INSERT INTO `commentaires`(`commentaire`, `id_utilisateur`, `date`) 
+                                 VALUES (?,?,NOW())");
+    mysqli_stmt_bind_param($ajoutCommentaire, "ss", $commentaire, $id);
+    mysqli_stmt_execute($ajoutCommentaire);
+    return $ajoutCommentaire;
+}

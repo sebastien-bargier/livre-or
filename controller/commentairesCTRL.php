@@ -11,7 +11,7 @@ if ((isset($_GET['valider'])) && $_GET['valider'] == 'Valider') {
         $commentaire = $_GET['commentaire'];
         $id = $_SESSION['id'];
 
-        $stmt = insertComments($commentaire, $id);
+        $ajoutCommentaire = insertComments($commentaire, $id);
 
         $msg['valid']= "Votre commentaire à bien été ajouté";
 

@@ -21,3 +21,11 @@ function getUtilisateurs() {
     $user = mysqli_fetch_all($request,MYSQLI_ASSOC);
     return $user;
 }
+
+function getUserSession() {
+    $db = dbConnect();
+    $sql = "SELECT login,password FROM utilisateurs WHERE login='" . $_SESSION['user'] .  "'";
+    $request = mysqli_query($db,$sql);
+    $userSession = mysqli_fetch_array($request,MYSQLI_ASSOC);
+    return $userSession;
+}

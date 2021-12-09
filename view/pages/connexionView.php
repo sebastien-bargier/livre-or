@@ -1,3 +1,5 @@
+<?php require 'controller/connexionCTRL.php' ?>
+
 <form action='#' method='post'>
     
     <h1>Connexion</h1>

@@ -15,7 +15,7 @@ if(isset($_POST['co']) && $_POST['co'] == 'Se Connecter') {
                 $_SESSION['user'] = $user[0]['login'];
                 $_SESSION['id'] = $user[0]['id'];
 
-                header('Location: ../../view/pages/accueil.php');
+                header('Location: ?page=accueil');
             } else {
                 $msg['pwd']= "Le mot de passe est incorrect.";
             }

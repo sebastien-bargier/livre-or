@@ -2,4 +2,4 @@
 
 session_start();
 session_destroy();
-header('refresh:0;url=../pages/accueil.php');
+header('refresh:0; url="?page=accueil"');

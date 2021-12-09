@@ -38,3 +38,13 @@ function insertComments($commentaire, $id) {
     mysqli_stmt_execute($ajoutCommentaire);
     return $ajoutCommentaire;
 }
+
+function getComments() {
+    $db = dbConnect();
+    $sql = "SELECT * FROM `commentaires` 
+    INNER JOIN utilisateurs ON utilisateurs.id = commentaires.id_utilisateur
+    ORDER BY date DESC";
+    $request = mysqli_query($db,$sql);
+    $afficherCommentaire = mysqli_fetch_all($request,MYSQLI_ASSOC);
+    return $afficherCommentaire;
+}

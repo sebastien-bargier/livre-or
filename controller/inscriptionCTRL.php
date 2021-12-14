@@ -1,5 +1,8 @@
 <?php
 require 'model/model.php';
+require 'authCTRL.php';
+
+userConnet();
 
 $msg['login'] = "";
 $msg['pwd'] = "";
@@ -7,34 +10,35 @@ $msg['c-pwd'] = "";
 
 if(isset($_POST['ins']) && $_POST['ins'] == 'S\'inscrire') {
 
-    $login = htmlentities($_POST['login']);
-    $pwd = htmlentities($_POST['password']);
-
-    $db = mysqli_connect('localhost','root','','livreor');
-    $sql = mysqli_query($db, "SELECT * FROM utilisateurs WHERE login = '".$_POST['login']."'");
+    $login = htmlentities(trim($_POST['login']));
+    $pwd = htmlentities(trim($_POST['password']));
+    $confirmPwd = htmlentities(trim($_POST["confirm-password"]));
     
-    if(mysqli_num_rows($sql)) {
-        $msg['login'] = "Ce login est déjà utilisé.";
+    $result = UserExist($login);
 
-    } else if(!empty($_POST['login']) && !empty($_POST['password'])) {
+    if($result != 0) {
+        $msg['login'] = "Ce login est déjà utilisé";
+    }
 
-        if ($_POST["password"] == $_POST["confirm-password"]) {
-            $stmt = insertUser($login, $pwd);
-            header('Location: connexion.php');
+    else if(!empty($login) && !empty($pwd)) {
+
+        if ($pwd == $confirmPwd) {
+            $registrationUser = insertUserDB($login, $pwd);
+            header('Location: ?page=connexion');
         } else {
-            $msg['pwd'] = "Les mots de passe ne correspondent pas";
+            $msg['c-pwd'] = "Les mots de passe ne correspondent pas";
         }
 
     } else {     
-        if (empty($_POST['login'])) {
+        if (empty($login)) {
             $msg['login'] = "Veuillez entrer un login";
         }
 
-        if (empty($_POST['password'])) {
+        if (empty($pwd)) {
             $msg['pwd'] = "Veuillez entrer un mot de passe";
         }
 
-        if (empty($_POST['confirm-password'])) {
+        if (empty($confirmPwd)) {
             $msg['c-pwd'] = "Veuillez confirmer le mot de passe";
         }
     }

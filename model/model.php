@@ -5,46 +5,65 @@ function dbConnect() {
     return $db;
 }
 
-function insertUser($login, $pwd) {
+function UserExist($login) {
     $db = dbConnect();
-    $stmt = mysqli_prepare($db, "INSERT INTO utilisateurs (login, password)
-            VALUES (?, ?)");
-    mysqli_stmt_bind_param($stmt, "ss", $login, $pwd);
-    mysqli_stmt_execute($stmt);
-    return $stmt;
+    $sql = "SELECT login FROM utilisateurs WHERE login = '$login'";
+    $result = mysqli_query($db,$sql);
+    $result = mysqli_num_rows($result);
+    //$result = mysqli_fetch_all($result,MYSQLI_ASSOC);
+    return $result;
 }
 
-function getUtilisateurs() {
+function insertUserDB($login, $pwd) {
     $db = dbConnect();
-    $sql = "SELECT id,login,password FROM utilisateurs WHERE login='" . htmlentities($_POST['login']) .  "'";
-    $request = mysqli_query($db,$sql);
-    $user = mysqli_fetch_all($request,MYSQLI_ASSOC);
+    $registrationUser = mysqli_prepare($db, "INSERT INTO utilisateurs (login, password)
+            VALUES (?, ?)");
+    mysqli_stmt_bind_param($registrationUser, "ss", $login, $pwd);
+    mysqli_stmt_execute($registrationUser);
+    return $registrationUser;
+}
+
+function getUser($login) {
+    $db = dbConnect();
+    $sql = "SELECT login,password FROM utilisateurs WHERE login='$login'";
+    $result = mysqli_query($db,$sql);
+    $user = mysqli_fetch_all($result,MYSQLI_ASSOC);
     return $user;
 }
 
 function getUserSession() {
     $db = dbConnect();
-    $sql = "SELECT login,password FROM utilisateurs WHERE login='" . $_SESSION['user'] .  "'";
-    $request = mysqli_query($db,$sql);
-    $userSession = mysqli_fetch_array($request,MYSQLI_ASSOC);
+    $sql = "SELECT login,password FROM utilisateurs WHERE login='".$_SESSION['login']."'";
+    $result = mysqli_query($db,$sql);
+    $userSession = mysqli_fetch_all($result,MYSQLI_ASSOC);
     return $userSession;
 }
 
-function insertComments($commentaire, $id) {
-    $db = dbConnect(); 
-    $ajoutCommentaire = mysqli_prepare($db, "INSERT INTO `commentaires`(`commentaire`, `id_utilisateur`, `date`) 
-                                 VALUES (?,?,NOW())");
-    mysqli_stmt_bind_param($ajoutCommentaire, "ss", $commentaire, $id);
-    mysqli_stmt_execute($ajoutCommentaire);
-    return $ajoutCommentaire;
+function updateUser($login, $pwd) {
+    $db = dbConnect();
+    $sql = "UPDATE utilisateurs
+            SET login = '$login',
+            password = '$pwd'
+            WHERE login = '".$_SESSION['login']."' ";
+    $updateUser = mysqli_query($db,$sql);
+    return $updateUser;
 }
 
-function getComments() {
+function insertComment($comment, $id) {
+    $db = dbConnect(); 
+    $addComment = mysqli_prepare($db, "INSERT INTO `commentaires`(`commentaire`, `id_utilisateur`, `date`) 
+                                 VALUES (?,?,NOW())");
+    mysqli_stmt_bind_param($addComment, "ss", $comment, $id);
+    mysqli_stmt_execute($addComment);
+    return $addComment;
+}
+
+function getComment() {
     $db = dbConnect();
-    $sql = "SELECT * FROM `commentaires` 
+    $sql = "SELECT * FROM commentaires 
     INNER JOIN utilisateurs ON utilisateurs.id = commentaires.id_utilisateur
     ORDER BY date DESC";
-    $request = mysqli_query($db,$sql);
-    $afficherCommentaire = mysqli_fetch_all($request,MYSQLI_ASSOC);
-    return $afficherCommentaire;
+    $result = mysqli_query($db,$sql);
+    $showComment = mysqli_fetch_all($result,MYSQLI_ASSOC);
+    return $showComment;
 }

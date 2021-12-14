@@ -1,6 +1,6 @@
 <?php require 'controller/commentairesCTRL.php'; ?>
 
-<form action="#" method="GET">
+<form action="#" method="POST">
     <label for="commentaire">Laisser votre commentaire : </label>
     <textarea name="commentaire"></textarea>
 

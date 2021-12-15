@@ -22,7 +22,7 @@ if(isset($_POST['mod']) && isset($_POST['mod']) == 'Modifier') {
     if(($result != 0) && $login != $_SESSION['login']) {
         $msg['login'] = "Ce login est déjà utilisé.";
 
-    } else if (($result === 0)) {
+    } else {
   
         if ($pwd == $confirmPwd) {
 

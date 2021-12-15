@@ -25,7 +25,7 @@ function insertUserDB($login, $pwd) {
 
 function getUser($login) {
     $db = dbConnect();
-    $sql = "SELECT login,password FROM utilisateurs WHERE login='$login'";
+    $sql = "SELECT * FROM utilisateurs WHERE login='$login'";
     $result = mysqli_query($db,$sql);
     $user = mysqli_fetch_all($result,MYSQLI_ASSOC);
     return $user;
@@ -33,7 +33,7 @@ function getUser($login) {
 
 function getUserSession() {
     $db = dbConnect();
-    $sql = "SELECT login,password FROM utilisateurs WHERE login='".$_SESSION['login']."'";
+    $sql = "SELECT * FROM utilisateurs WHERE login='".$_SESSION['login']."'";
     $result = mysqli_query($db,$sql);
     $userSession = mysqli_fetch_all($result,MYSQLI_ASSOC);
     return $userSession;
